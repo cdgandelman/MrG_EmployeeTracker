@@ -27,7 +27,8 @@ function menu(){
         }else if(res.choice==="Update Role") {
             updateRole()
         }else if(res.choice==="Exit") {
-            exit()
+            console.log("See Ya")
+            process.exit()
         }
     })}
 //view department table
@@ -58,7 +59,7 @@ function addDept(){
             message: "What is the Department name?"
         }
     ]).then((res)=>{ 
-        db.query("insert into department (name) values (?)", [res.name], (err,data)=>{console.table(data)
+        db.query("insert into department (name) values (?)", [res.name], (err,data)=>{console.log("Added!")
         menu()
         })
     })
@@ -82,7 +83,7 @@ function addRole(){
             message: "What is the Department ID?"
         }
     ]).then((res)=>{ 
-        db.query("insert into department (title,salary,department_id) values (?,?,?)", [res.title,res.salary,res.department_id], (err,data)=>{console.table(data)
+        db.query("insert into department (title,salary,department_id) values (?,?,?)", [res.title,res.salary,res.department_id], (err,data)=>{console.log("Added!")
         menu()
         })
     })
@@ -111,8 +112,38 @@ function addEmployee(){
             message: "Who is the new employee's manager?"
         }
     ]).then((res)=>{ 
-        db.query("insert into department (first_name,last_name,role_id,manager_id) values (?,?,?,?)", [res.first_name,res.last_name,res.role_id,res.manager_id], (err,data)=>{console.table(data)
+        db.query("insert into department (first_name,last_name,role_id,manager_id) values (?,?,?,?)", [res.first_name,res.last_name,res.role_id,res.manager_id], (err,data)=>{console.log("Added!")
         menu()
         })
     })
 }
+function updateRole() {
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "title",
+                message: "What is the new role title?"
+            },
+            {
+                type: "input",
+                name: "salary",
+                message: "What is the new role's salary?"
+            },
+            {
+                type: "input",
+                name: "department_id",
+                message: "What is the Department ID?"
+            },
+    ])    
+    .then((answers) => {
+        const query = "UPDATE role SET title = ?, salary = ?, department_id = ? WHERE id = ?";
+        const values = [answers.title, answers.salary, answers.department_id, answers.role_id];
+  
+        db.query(query, values, (err, result) => {
+          if (err) throw err;
+          console.log(`${result.affectedRows} role updated!\n`);
+          menu();
+        });
+      });
+  }
+  
