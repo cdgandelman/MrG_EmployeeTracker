@@ -118,6 +118,7 @@ function addEmployee(){
     })
 }
 function updateRole() {
+    db.query("select * from role")
         inquirer.prompt([
             {
                 type: "input",
@@ -146,4 +147,4 @@ function updateRole() {
         });
       });
   }
-  
+  menu();
